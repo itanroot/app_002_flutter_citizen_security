@@ -4,22 +4,25 @@ import "package:seguridad_ciudadana_app/features/auth/presentation/pages/login_p
 import "package:seguridad_ciudadana_app/features/auth/presentation/pages/register_page.dart";
 import "package:seguridad_ciudadana_app/features/auth/presentation/pages/profile_page.dart";
 import "package:seguridad_ciudadana_app/features/auth/presentation/controllers/auth_controller.dart";
+import "package:seguridad_ciudadana_app/features/sos/presentation/pages/home_page.dart";
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authControllerProvider);
   
   return GoRouter(
-    initialLocation: "/login",
+    initialLocation: "/home",
     redirect: (context, state) {
       final isLoggedIn = authState.user != null;
       final isLoggingIn = state.matchedLocation == "/login";
       final isRegistering = state.matchedLocation == "/register";
+      final isHome = state.matchedLocation == "/home";
 
-      if (!isLoggedIn && !isLoggingIn && !isRegistering) return "/login";
+      if (!isLoggedIn && !isLoggingIn && !isRegistering && !isHome) return "/home";
       if (isLoggedIn && (isLoggingIn || isRegistering)) return "/profile";
       return null;
     },
     routes: [
+      GoRoute(path: "/home", builder: (context, state) => const HomePage()),
       GoRoute(path: "/login", builder: (context, state) => const LoginPage()),
       GoRoute(path: "/register", builder: (context, state) => const RegisterPage()),
       GoRoute(path: "/profile", builder: (context, state) => const ProfilePage()),

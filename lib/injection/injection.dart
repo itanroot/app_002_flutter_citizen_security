@@ -18,6 +18,11 @@ import 'package:seguridad_ciudadana_app/features/location/domain/repositories/lo
 import 'package:seguridad_ciudadana_app/features/location/domain/usecases/start_location_tracking_usecase.dart';
 import 'package:seguridad_ciudadana_app/features/location/domain/usecases/stop_location_tracking_usecase.dart';
 import 'package:seguridad_ciudadana_app/features/location/domain/usecases/watch_location_updates_usecase.dart';
+import 'package:seguridad_ciudadana_app/features/sos/data/datasources/sos_remote_data_source.dart';
+import 'package:seguridad_ciudadana_app/features/sos/data/datasources/sos_remote_data_source_impl.dart';
+import 'package:seguridad_ciudadana_app/features/sos/data/repositories/sos_repository_impl.dart';
+import 'package:seguridad_ciudadana_app/features/sos/domain/repositories/sos_repository.dart';
+import 'package:seguridad_ciudadana_app/features/sos/domain/usecases/send_sos_usecase.dart';
 import 'package:seguridad_ciudadana_app/core/services/background_location_service.dart';
 import 'package:seguridad_ciudadana_app/features/background_location/data/datasources/background_location_data_source.dart';
 import 'package:seguridad_ciudadana_app/features/background_location/data/datasources/background_location_data_source_impl.dart';
@@ -77,6 +82,19 @@ final stopLocationTrackingUseCaseProvider = Provider<StopLocationTrackingUseCase
 
 final watchLocationUpdatesUseCaseProvider = Provider<WatchLocationUpdatesUseCase>((ref) {
   return WatchLocationUpdatesUseCase(ref.watch(locationRepositoryProvider));
+});
+
+final sosRemoteDataSourceProvider = Provider<SosRemoteDataSource>((ref) {
+  final dio = ref.watch(dioProvider);
+  return SosRemoteDataSourceImpl(dio);
+});
+
+final sosRepositoryProvider = Provider<SosRepository>((ref) {
+  return SosRepositoryImpl(ref.watch(sosRemoteDataSourceProvider));
+});
+
+final sendSosUseCaseProvider = Provider<SendSosUseCase>((ref) {
+  return SendSosUseCase(ref.watch(sosRepositoryProvider));
 });
 
 final backgroundLocationServiceProvider = Provider<BackgroundLocationService>((ref) {
