@@ -9,6 +9,7 @@ final dioProvider = Provider<Dio>((ref) {
     baseUrl: AppConstants.baseUrl,
     connectTimeout: const Duration(seconds: 30),
     receiveTimeout: const Duration(seconds: 30),
+    sendTimeout: const Duration(seconds: 30),
   ));
 
   dio.interceptors.add(InterceptorsWrapper(
@@ -18,9 +19,6 @@ final dioProvider = Provider<Dio>((ref) {
         options.headers['Authorization'] = 'Bearer $token';
       }
       return handler.next(options);
-    },
-    onError: (DioException e, handler) {
-      return handler.next(e);
     },
   ));
 
