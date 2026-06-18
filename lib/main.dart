@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/config/router.dart';
+import 'core/config/app_config.dart';
 
-void main() {
+void main() async {
+  // load enviroment from .env
+  await AppConfig.load(); 
+ 
   runApp(
     const ProviderScope(
       child: MyApp(),

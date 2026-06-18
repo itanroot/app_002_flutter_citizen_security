@@ -9,6 +9,8 @@ import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodChannel
+import android.os.Handler
+import android.os.Looper
 
 class MainActivity : FlutterActivity() {
   private val channelName = "com.example.seguridad_ciudadana_app/background_location"
@@ -20,7 +22,11 @@ class MainActivity : FlutterActivity() {
     private var eventSink: EventChannel.EventSink? = null
 
     fun sendLocationEvent(data: Map<String, Any?>) {
-      eventSink?.success(data)
+      Handler(Looper.getMainLooper()).post {
+
+            eventSink?.success(data)
+
+        }
     }
   }
 

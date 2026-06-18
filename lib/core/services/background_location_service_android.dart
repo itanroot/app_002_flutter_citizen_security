@@ -29,6 +29,8 @@ class BackgroundLocationService {
   }
 
   Stream<Map<String, dynamic>> get onLocationChanged {
-    return _eventChannel.receiveBroadcastStream().cast<Map<String, dynamic>>();
+    return _eventChannel
+      .receiveBroadcastStream()
+      .map((event) => Map<String, dynamic>.from(event));
   }
 }

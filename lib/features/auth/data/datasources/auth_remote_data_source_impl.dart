@@ -3,6 +3,7 @@ import "package:seguridad_ciudadana_app/core/errors/exceptions.dart";
 import "package:seguridad_ciudadana_app/features/auth/data/datasources/auth_remote_data_source.dart";
 import "package:seguridad_ciudadana_app/features/auth/data/models/auth_model.dart";
 import "package:seguridad_ciudadana_app/features/auth/data/models/user_model.dart";
+import 'package:seguridad_ciudadana_app/core/constants/api_constants.dart';
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final Dio dio;
@@ -12,7 +13,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<AuthModel> login(String username, String password) async {
     try {
       final response = await dio.post(
-        "/auth/login",
+        ApiConstants.login,
         data: {"username": username, "password": password},
       );
       return AuthModel.fromJson(response.data["data"]);
@@ -33,7 +34,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<AuthModel> register(String name, String email, String password) async {
     try {
       final response = await dio.post(
-        "/auth/register",
+        ApiConstants.register,
         data: {"name": name, "email": email, "password": password},
       );
       return AuthModel.fromJson(response.data["data"]);
@@ -45,7 +46,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> logout() async {
     try {
-      await dio.post("/auth/logout");
+      await dio.post(ApiConstants.logout);
     } on DioException catch (e) {
       throw ServerException(e.message ?? "Logout failed");
     }
@@ -54,7 +55,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<UserModel> getCurrentUser() async {
     try {
-      final response = await dio.get("/auth/me");
+      final response = await dio.get(ApiConstants.profile);
       return UserModel.fromJson(response.data["data"]);
     } on DioException catch (e) {
       throw ServerException(e.message ?? "Failed to fetch user");
