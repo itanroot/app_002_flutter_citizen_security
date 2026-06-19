@@ -12,12 +12,14 @@ class IncidentMapController {
   final WidgetRef ref;
   final GetIncidentsUseCase getAll;
   final GetPendingIncidentsUseCase getPending;
+  final GetMyIncidentsUseCase getMy;
   final bool Function() canUpdate;
 
   IncidentMapController(
     this.ref,
     this.getAll,
     this.getPending, {
+    required this.getMy,
     bool Function()? canUpdate,
   }) : canUpdate = canUpdate ?? _alwaysTrue;
 
@@ -31,8 +33,9 @@ class IncidentMapController {
       if (!canUpdate()) return;
       ref.read(incidentListProvider.notifier).state = list;
     } finally {
-      if (!canUpdate()) return;
-      ref.read(incidentLoadingProvider.notifier).state = false;
+      if (canUpdate()) {
+        ref.read(incidentLoadingProvider.notifier).state = false;
+      }
     }
   }
 
@@ -44,8 +47,23 @@ class IncidentMapController {
       if (!canUpdate()) return;
       ref.read(incidentListProvider.notifier).state = list;
     } finally {
+      if (canUpdate()) {
+        ref.read(incidentLoadingProvider.notifier).state = false;
+      }
+    }
+  }
+
+  Future<void> loadMy() async {
+    if (!canUpdate()) return;
+    ref.read(incidentLoadingProvider.notifier).state = true;
+    try {
+      final list = await getMy();
       if (!canUpdate()) return;
-      ref.read(incidentLoadingProvider.notifier).state = false;
+      ref.read(incidentListProvider.notifier).state = list;
+    } finally {
+      if (canUpdate()) {
+        ref.read(incidentLoadingProvider.notifier).state = false;
+      }
     }
   }
 }

@@ -10,6 +10,7 @@ import 'package:seguridad_ciudadana_app/features/auth/domain/usecases/login_usec
 import 'package:seguridad_ciudadana_app/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:seguridad_ciudadana_app/features/auth/domain/usecases/register_usecase.dart';
 import 'package:seguridad_ciudadana_app/features/auth/domain/usecases/get_current_user_usecase.dart';
+import 'package:seguridad_ciudadana_app/core/security/device_uuid_service.dart';
 import 'package:seguridad_ciudadana_app/core/security/secure_storage_service.dart';
 import 'package:seguridad_ciudadana_app/features/location/data/datasources/location_remote_data_source.dart';
 import 'package:seguridad_ciudadana_app/features/location/data/datasources/location_remote_data_source_impl.dart';
@@ -47,6 +48,10 @@ final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
   return AuthRemoteDataSourceImpl(dio);
 });
 
+final deviceUuidServiceProvider = Provider<DeviceUuidService>((ref) {
+  return DeviceUuidService(ref.watch(secureStorageProvider));
+});
+
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final remote = ref.watch(authRemoteDataSourceProvider);
   final local = ref.watch(authLocalDataSourceProvider);
@@ -65,7 +70,9 @@ final incidentRemoteDataSourceProvider = Provider<IncidentRemoteDataSource>((ref
 
 final incidentRepositoryProvider = Provider<IncidentRepository>((ref) {
   final remote = ref.watch(incidentRemoteDataSourceProvider);
-  return IncidentRepositoryImpl(remote);
+  final secureStorage = ref.watch(secureStorageProvider);
+  final deviceUuidService = ref.watch(deviceUuidServiceProvider);
+  return IncidentRepositoryImpl(remote, secureStorage, deviceUuidService);
 });
 
 final getIncidentsUseCaseProvider = Provider<GetIncidentsUseCase>((ref) {
@@ -76,6 +83,11 @@ final getIncidentsUseCaseProvider = Provider<GetIncidentsUseCase>((ref) {
 final getPendingIncidentsUseCaseProvider = Provider<GetPendingIncidentsUseCase>((ref) {
   final repo = ref.watch(incidentRepositoryProvider);
   return GetPendingIncidentsUseCase(repo);
+});
+
+final getMyIncidentsUseCaseProvider = Provider<GetMyIncidentsUseCase>((ref) {
+  final repo = ref.watch(incidentRepositoryProvider);
+  return GetMyIncidentsUseCase(repo);
 });
 
 final registerUseCaseProvider = Provider<RegisterUseCase>((ref) {
@@ -117,7 +129,10 @@ final sosRemoteDataSourceProvider = Provider<SosRemoteDataSource>((ref) {
 });
 
 final sosRepositoryProvider = Provider<SosRepository>((ref) {
-  return SosRepositoryImpl(ref.watch(sosRemoteDataSourceProvider));
+  return SosRepositoryImpl(
+    ref.watch(sosRemoteDataSourceProvider),
+    ref.watch(deviceUuidServiceProvider),
+  );
 });
 
 final sendSosUseCaseProvider = Provider<SendSosUseCase>((ref) {

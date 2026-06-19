@@ -7,16 +7,18 @@ final class ApiConstants {
   static const String _v1 = '/api/v1';
 
   //  Auth
-  static const String login  = '$_v1/auth/login';
+  static const String login = '$_v1/auth/login';
   static const String register = '$_v1/auth/register';
   static const String logout = '$_v1/auth/logout';
-  static const String profile     = '$_v1/auth/me';
+  static const String profile = '$_v1/auth/me';
 
   //  User
-  static const String userTrackingLocation     = '$_v1/user/tracking/location';
+  static const String userTrackingLocation = '$_v1/user/tracking/location';
 
   // Incidents
-  static const String incidentSos     = '$_v1/incidents/sos';  
+  static const String incidentSos = '$_v1/incidents/sos';
+  static const String incidentMy = '$_v1/incidents/my';
+  static const String incidents = '$_v1/incidents';
 
   //  Serenazgo
 

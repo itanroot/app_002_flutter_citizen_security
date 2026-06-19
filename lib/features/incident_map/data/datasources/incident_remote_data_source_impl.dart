@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:seguridad_ciudadana_app/core/constants/api_constants.dart';
 import 'package:seguridad_ciudadana_app/features/incident_map/data/datasources/incident_remote_data_source.dart';
 import 'package:seguridad_ciudadana_app/features/incident_map/data/models/incident_model.dart';
 
@@ -31,13 +32,24 @@ class IncidentRemoteDataSourceImpl implements IncidentRemoteDataSource {
 
   @override
   Future<List<IncidentModel>> fetchAllIncidents() async {
-    final response = await dio.get('/api/v1/incidents');
+    final response = await dio.get(ApiConstants.incidents);
     return _parseIncidents(response.data);
   }
 
   @override
   Future<List<IncidentModel>> fetchPendingIncidents() async {
-    final response = await dio.get('/api/v1/incidents', queryParameters: {'status': 'open'});
+    final response = await dio.get(ApiConstants.incidents, queryParameters: {'status': 'open'});
+    return _parseIncidents(response.data);
+  }
+
+  @override
+  Future<List<IncidentModel>> fetchMyIncidents({String? deviceUuid}) async {
+    final response = await dio.get(
+      ApiConstants.incidentMy,
+      queryParameters: deviceUuid != null && deviceUuid.isNotEmpty
+          ? {'device_uuid': deviceUuid}
+          : null,
+    );
     return _parseIncidents(response.data);
   }
 }
