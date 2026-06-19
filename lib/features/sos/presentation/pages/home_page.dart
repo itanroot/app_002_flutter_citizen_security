@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:seguridad_ciudadana_app/features/sos/presentation/controllers/sos_controller.dart';
 import 'package:seguridad_ciudadana_app/shared/widgets/app_drawer.dart';
 
@@ -69,6 +70,12 @@ class HomePage extends ConsumerWidget {
                           style: TextStyle(fontSize: 16, color: Colors.redAccent),
                         ),
                         const SizedBox(height: 24),
+                        OutlinedButton.icon(
+                          onPressed: () => context.push('/my-incidents'),
+                          icon: const Icon(Icons.history),
+                          label: const Text('Ver mis incidencias'),
+                        ),
+                        const SizedBox(height: 14),
                         SizedBox(
                           width: 190,
                           height: 190,

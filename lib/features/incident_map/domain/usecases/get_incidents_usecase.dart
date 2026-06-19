@@ -20,3 +20,13 @@ class GetPendingIncidentsUseCase {
     return repository.getPendingIncidents();
   }
 }
+
+class GetMyIncidentsUseCase {
+  final IncidentRepository repository;
+
+  GetMyIncidentsUseCase(this.repository);
+
+  Future<List<Incident>> call() async {
+    return repository.getMyIncidents();
+  }
+}

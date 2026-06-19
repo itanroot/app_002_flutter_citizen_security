@@ -70,7 +70,9 @@ final incidentRemoteDataSourceProvider = Provider<IncidentRemoteDataSource>((ref
 
 final incidentRepositoryProvider = Provider<IncidentRepository>((ref) {
   final remote = ref.watch(incidentRemoteDataSourceProvider);
-  return IncidentRepositoryImpl(remote);
+  final secureStorage = ref.watch(secureStorageProvider);
+  final deviceUuidService = ref.watch(deviceUuidServiceProvider);
+  return IncidentRepositoryImpl(remote, secureStorage, deviceUuidService);
 });
 
 final getIncidentsUseCaseProvider = Provider<GetIncidentsUseCase>((ref) {
@@ -81,6 +83,11 @@ final getIncidentsUseCaseProvider = Provider<GetIncidentsUseCase>((ref) {
 final getPendingIncidentsUseCaseProvider = Provider<GetPendingIncidentsUseCase>((ref) {
   final repo = ref.watch(incidentRepositoryProvider);
   return GetPendingIncidentsUseCase(repo);
+});
+
+final getMyIncidentsUseCaseProvider = Provider<GetMyIncidentsUseCase>((ref) {
+  final repo = ref.watch(incidentRepositoryProvider);
+  return GetMyIncidentsUseCase(repo);
 });
 
 final registerUseCaseProvider = Provider<RegisterUseCase>((ref) {
