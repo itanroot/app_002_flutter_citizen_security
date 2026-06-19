@@ -24,12 +24,18 @@ import 'package:seguridad_ciudadana_app/features/sos/data/repositories/sos_repos
 import 'package:seguridad_ciudadana_app/features/sos/domain/repositories/sos_repository.dart';
 import 'package:seguridad_ciudadana_app/features/sos/domain/usecases/send_sos_usecase.dart';
 import 'package:seguridad_ciudadana_app/core/services/background_location_service.dart';
+import 'package:seguridad_ciudadana_app/core/services/incident_realtime_service.dart';
 import 'package:seguridad_ciudadana_app/features/background_location/data/datasources/background_location_data_source.dart';
 import 'package:seguridad_ciudadana_app/features/background_location/data/datasources/background_location_data_source_impl.dart';
 import 'package:seguridad_ciudadana_app/features/background_location/data/repositories/background_location_repository_impl.dart';
 import 'package:seguridad_ciudadana_app/features/background_location/domain/repositories/background_location_repository.dart';
 import 'package:seguridad_ciudadana_app/features/background_location/domain/usecases/start_background_location_usecase.dart';
 import 'package:seguridad_ciudadana_app/features/background_location/domain/usecases/stop_background_location_usecase.dart';
+import 'package:seguridad_ciudadana_app/features/incident_map/data/datasources/incident_remote_data_source.dart';
+import 'package:seguridad_ciudadana_app/features/incident_map/data/datasources/incident_remote_data_source_impl.dart';
+import 'package:seguridad_ciudadana_app/features/incident_map/data/repositories/incident_repository_impl.dart';
+import 'package:seguridad_ciudadana_app/features/incident_map/domain/repositories/incident_repository.dart';
+import 'package:seguridad_ciudadana_app/features/incident_map/domain/usecases/get_incidents_usecase.dart';
 
 final authLocalDataSourceProvider = Provider<AuthLocalDataSource>((ref) {
   final secureStorage = ref.watch(secureStorageProvider);
@@ -49,6 +55,27 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
 
 final loginUseCaseProvider = Provider<LoginUseCase>((ref) {
   return LoginUseCase(ref.watch(authRepositoryProvider));
+});
+
+// Incident map providers
+final incidentRemoteDataSourceProvider = Provider<IncidentRemoteDataSource>((ref) {
+  final dio = ref.watch(dioProvider);
+  return IncidentRemoteDataSourceImpl(dio);
+});
+
+final incidentRepositoryProvider = Provider<IncidentRepository>((ref) {
+  final remote = ref.watch(incidentRemoteDataSourceProvider);
+  return IncidentRepositoryImpl(remote);
+});
+
+final getIncidentsUseCaseProvider = Provider<GetIncidentsUseCase>((ref) {
+  final repo = ref.watch(incidentRepositoryProvider);
+  return GetIncidentsUseCase(repo);
+});
+
+final getPendingIncidentsUseCaseProvider = Provider<GetPendingIncidentsUseCase>((ref) {
+  final repo = ref.watch(incidentRepositoryProvider);
+  return GetPendingIncidentsUseCase(repo);
 });
 
 final registerUseCaseProvider = Provider<RegisterUseCase>((ref) {
@@ -99,6 +126,10 @@ final sendSosUseCaseProvider = Provider<SendSosUseCase>((ref) {
 
 final backgroundLocationServiceProvider = Provider<BackgroundLocationService>((ref) {
   return BackgroundLocationService();
+});
+
+final incidentRealtimeServiceProvider = Provider<IncidentRealtimeService>((ref) {
+  return IncidentRealtimeService(ref.watch(secureStorageProvider));
 });
 
 final backgroundLocationDataSourceProvider = Provider<BackgroundLocationDataSource>((ref) {

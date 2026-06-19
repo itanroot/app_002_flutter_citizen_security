@@ -4,8 +4,10 @@ import 'core/config/router.dart';
 import 'core/config/app_config.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   // load enviroment from .env
-  await AppConfig.load(); 
+  await AppConfig.load();
  
   runApp(
     const ProviderScope(

@@ -1,8 +1,8 @@
 import 'app_config.dart';
 
 /// Parámetros de conexión para Laravel Reverb.
-/// Reverb implementa el protocolo Pusher, por lo que usamos
-/// pusher_channels_flutter + laravel_echo.
+/// Reverb implementa el protocolo Pusher, pero aquí usamos un cliente
+/// específico para Reverb para evitar dependencias antiguas del SDK Pusher.
 final class WebSocketConfig {
   WebSocketConfig._();
 

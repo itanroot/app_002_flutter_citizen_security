@@ -29,7 +29,12 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final result = await remoteDataSource.register(name, email, password);
       final userModel = result.user;
-      return Right(UserEntity(id: userModel.id, username: userModel.username, email: userModel.email));
+      return Right(UserEntity(
+        id: userModel.id,
+        username: userModel.username,
+        email: userModel.email,
+        municipalityId: userModel.municipalityId,
+      ));
     } on ServerException catch (e) {
       return Left(ApiFailure(e.message));
     }
@@ -50,7 +55,12 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, UserEntity>> getCurrentUser() async {
     try {
       final result = await remoteDataSource.getCurrentUser();
-      return Right(UserEntity(id: result.id, username: result.username, email: result.email));
+      return Right(UserEntity(
+        id: result.id,
+        username: result.username,
+        email: result.email,
+        municipalityId: result.municipalityId,
+      ));
     } on ServerException catch (e) {
       return Left(ApiFailure(e.message));
     }

@@ -62,6 +62,14 @@ class AppDrawer extends ConsumerWidget {
               ),
             ] else ...[
               ListTile(
+                leading: const Icon(Icons.map),
+                title: const Text('Mapa de incidencias'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  context.push('/incidents');
+                },
+              ),
+              ListTile(
                 leading: const Icon(Icons.person),
                 title: const Text('Perfil'),
                 onTap: () {
