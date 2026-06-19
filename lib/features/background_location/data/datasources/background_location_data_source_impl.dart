@@ -1,5 +1,6 @@
 import 'package:geolocator/geolocator.dart';
-import 'package:seguridad_ciudadana_app/core/constants/app_constants.dart';
+import "package:seguridad_ciudadana_app/core/config/app_config.dart";
+import "package:seguridad_ciudadana_app/core/constants/api_constants.dart";
 import 'package:seguridad_ciudadana_app/core/errors/exceptions.dart';
 import 'package:seguridad_ciudadana_app/features/background_location/data/datasources/background_location_data_source.dart';
 import 'package:seguridad_ciudadana_app/core/services/background_location_service.dart';
@@ -36,7 +37,7 @@ class BackgroundLocationDataSourceImpl implements BackgroundLocationDataSource {
       throw ServerException('Authentication token is required to start background tracking.');
     }
 
-    final endpoint = '${AppConstants.baseUrl}/user/tracking/location';
+    final endpoint = '${AppConfig.apiBaseUrl}${ApiConstants.userTrackingLocation}';
     await _service.start(token, endpoint);
   }
 

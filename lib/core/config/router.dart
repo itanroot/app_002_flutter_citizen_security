@@ -5,6 +5,7 @@ import "package:seguridad_ciudadana_app/features/auth/presentation/pages/registe
 import "package:seguridad_ciudadana_app/features/auth/presentation/pages/profile_page.dart";
 import "package:seguridad_ciudadana_app/features/auth/presentation/controllers/auth_controller.dart";
 import "package:seguridad_ciudadana_app/features/sos/presentation/pages/home_page.dart";
+import 'package:seguridad_ciudadana_app/features/incident_map/presentation/pages/incident_map_page.dart';
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authControllerProvider);
@@ -22,6 +23,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       return null;
     },
     routes: [
+      GoRoute(path: '/incidents', builder: (context, state) => const IncidentMapPage()),
       GoRoute(path: "/home", builder: (context, state) => const HomePage()),
       GoRoute(path: "/login", builder: (context, state) => const LoginPage()),
       GoRoute(path: "/register", builder: (context, state) => const RegisterPage()),

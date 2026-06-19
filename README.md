@@ -61,7 +61,11 @@ ALWAYS create:
 - flutter run -d chrome
 - dart run flutter_launcher_icons
 
-- flutter run --dart-define=ENVIRONMENT=dev --dart-define=API_BASE_URL=https://host-backend/api/v1
+- flutter run --dart-define=ENVIRONMENT=dev --dart-define=API_BASE_URL=http://host-backend/api/v1
+
+- flutter build apk --release
+
+- flutter build apk --debug
 
 
 # command emulator app
