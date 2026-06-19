@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:seguridad_ciudadana_app/core/services/incident_realtime_service.dart';
 import 'package:seguridad_ciudadana_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:seguridad_ciudadana_app/features/incident_map/presentation/controllers/incident_map_controller.dart';
 import 'package:seguridad_ciudadana_app/injection/injection.dart';
@@ -16,6 +17,7 @@ class IncidentMapPage extends ConsumerStatefulWidget {
 
 class _IncidentMapPageState extends ConsumerState<IncidentMapPage> {
   GoogleMapController? _mapController;
+  late final IncidentRealtimeService _realtimeService;
   bool _realtimeConnected = false;
   bool _isDisposed = false;
 
@@ -24,6 +26,7 @@ class _IncidentMapPageState extends ConsumerState<IncidentMapPage> {
   @override
   void initState() {
     super.initState();
+    _realtimeService = ref.read(incidentRealtimeServiceProvider);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!_canUseRef) return;
       _loadIncidents().then((_) => _connectRealtime());
@@ -33,8 +36,7 @@ class _IncidentMapPageState extends ConsumerState<IncidentMapPage> {
   @override
   void dispose() {
     _isDisposed = true;
-    final realtimeService = ref.read(incidentRealtimeServiceProvider);
-    unawaited(realtimeService.disconnect());
+    unawaited(_realtimeService.detachListener());
     _mapController?.dispose();
     super.dispose();
   }
@@ -49,6 +51,7 @@ class _IncidentMapPageState extends ConsumerState<IncidentMapPage> {
       ref,
       ref.read(getIncidentsUseCaseProvider),
       ref.read(getPendingIncidentsUseCaseProvider),
+      canUpdate: () => _canUseRef,
     );
 
     if (filter == IncidentMapFilter.pending) {
@@ -97,7 +100,7 @@ class _IncidentMapPageState extends ConsumerState<IncidentMapPage> {
       return;
     }
 
-    await ref.read(incidentRealtimeServiceProvider).connectToMunicipality(
+    await _realtimeService.connectToMunicipality(
       municipalityId: municipalityId,
       onIncidentCreated: () async {
         if (!_canUseRef) return;

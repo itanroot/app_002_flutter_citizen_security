@@ -227,4 +227,15 @@ class IncidentRealtimeService {
     _currentChannelName = null;
     _initialized = false;
   }
+
+  Future<void> detachListener() async {
+    // Invalidate any already-captured listener callback immediately.
+    _listenerGeneration++;
+
+    try {
+      await _eventSubscription?.cancel();
+    } catch (_) {}
+
+    _eventSubscription = null;
+  }
 }
