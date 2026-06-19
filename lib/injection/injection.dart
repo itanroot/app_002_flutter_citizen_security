@@ -10,6 +10,7 @@ import 'package:seguridad_ciudadana_app/features/auth/domain/usecases/login_usec
 import 'package:seguridad_ciudadana_app/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:seguridad_ciudadana_app/features/auth/domain/usecases/register_usecase.dart';
 import 'package:seguridad_ciudadana_app/features/auth/domain/usecases/get_current_user_usecase.dart';
+import 'package:seguridad_ciudadana_app/core/security/device_uuid_service.dart';
 import 'package:seguridad_ciudadana_app/core/security/secure_storage_service.dart';
 import 'package:seguridad_ciudadana_app/features/location/data/datasources/location_remote_data_source.dart';
 import 'package:seguridad_ciudadana_app/features/location/data/datasources/location_remote_data_source_impl.dart';
@@ -45,6 +46,10 @@ final authLocalDataSourceProvider = Provider<AuthLocalDataSource>((ref) {
 final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
   final dio = ref.watch(dioProvider);
   return AuthRemoteDataSourceImpl(dio);
+});
+
+final deviceUuidServiceProvider = Provider<DeviceUuidService>((ref) {
+  return DeviceUuidService(ref.watch(secureStorageProvider));
 });
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
@@ -117,7 +122,10 @@ final sosRemoteDataSourceProvider = Provider<SosRemoteDataSource>((ref) {
 });
 
 final sosRepositoryProvider = Provider<SosRepository>((ref) {
-  return SosRepositoryImpl(ref.watch(sosRemoteDataSourceProvider));
+  return SosRepositoryImpl(
+    ref.watch(sosRemoteDataSourceProvider),
+    ref.watch(deviceUuidServiceProvider),
+  );
 });
 
 final sendSosUseCaseProvider = Provider<SendSosUseCase>((ref) {
