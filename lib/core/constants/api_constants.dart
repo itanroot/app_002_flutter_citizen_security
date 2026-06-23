@@ -20,6 +20,8 @@ final class ApiConstants {
   static const String incidentMy = '$_v1/incidents/my';
   static const String incidents = '$_v1/incidents';
 
+  static String incidentSosDetail(int id) => '$incidentSos/$id';
+
   //  Serenazgo
 
   // GET — Incidencias activas para el mapa.

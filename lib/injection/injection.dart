@@ -90,6 +90,11 @@ final getMyIncidentsUseCaseProvider = Provider<GetMyIncidentsUseCase>((ref) {
   return GetMyIncidentsUseCase(repo);
 });
 
+final attendSosIncidentUseCaseProvider = Provider<AttendSosIncidentUseCase>((ref) {
+  final repo = ref.watch(incidentRepositoryProvider);
+  return AttendSosIncidentUseCase(repo);
+});
+
 final registerUseCaseProvider = Provider<RegisterUseCase>((ref) {
   return RegisterUseCase(ref.watch(authRepositoryProvider));
 });

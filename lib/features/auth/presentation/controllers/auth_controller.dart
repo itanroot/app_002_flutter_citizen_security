@@ -31,15 +31,12 @@ class AuthController extends StateNotifier<AuthState> {
       result.fold((failure) {
         // devolver el mensaje de error que genera el backend en "result"
         state = state.copyWith(isLoading: false, error: failure.message);
-        
       }, (_) {});
       return;
     }
 
-    final getUserUseCase = ref.read(getCurrentUserUseCaseProvider);
-    final userResult = await getUserUseCase.execute();
-    userResult.fold(
-      (failure) => state = state.copyWith(isLoading: false, error: failure.message),
+    result.fold(
+      (_) {},
       (user) => state = state.copyWith(isLoading: false, user: user),
     );
   }

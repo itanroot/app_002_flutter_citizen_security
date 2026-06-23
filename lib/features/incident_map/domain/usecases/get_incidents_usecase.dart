@@ -30,3 +30,13 @@ class GetMyIncidentsUseCase {
     return repository.getMyIncidents();
   }
 }
+
+class AttendSosIncidentUseCase {
+  final IncidentRepository repository;
+
+  AttendSosIncidentUseCase(this.repository);
+
+  Future<void> call({required int incidentId, required int userId}) {
+    return repository.attendSosIncident(incidentId: incidentId, userId: userId);
+  }
+}

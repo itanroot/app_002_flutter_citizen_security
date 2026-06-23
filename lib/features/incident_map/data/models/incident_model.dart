@@ -12,10 +12,16 @@ class IncidentModel extends Incident {
     required double longitude,
     required String status,
     required String incidentTypeName,
+    String? incidentTypeColorBackground,
     required String incidentStateName,
+    required String incidentStateDescription,
+    String? incidentStateColorBackground,
+    String? incidentStateColorText,
     required String municipalityName,
     String? assignmentStatus,
     String? assignedSerenazgoName,
+    double? serenazgoLatitude,
+    double? serenazgoLongitude,
     required DateTime createdAt,
     DateTime? closedAt,
   }) : super(
@@ -29,10 +35,16 @@ class IncidentModel extends Incident {
           longitude: longitude,
           status: status,
           incidentTypeName: incidentTypeName,
+          incidentTypeColorBackground: incidentTypeColorBackground,
           incidentStateName: incidentStateName,
+          incidentStateDescription: incidentStateDescription,
+          incidentStateColorBackground: incidentStateColorBackground,
+          incidentStateColorText: incidentStateColorText,
           municipalityName: municipalityName,
           assignmentStatus: assignmentStatus,
           assignedSerenazgoName: assignedSerenazgoName,
+          serenazgoLatitude: serenazgoLatitude,
+          serenazgoLongitude: serenazgoLongitude,
           createdAt: createdAt,
           closedAt: closedAt,
         );
@@ -46,9 +58,12 @@ class IncidentModel extends Incident {
         ? assignments.first as Map<String, dynamic>?
         : null;
     final serenazgo = firstAssignment?['serenazgo'] as Map<String, dynamic>?;
+    final serenazgoProfile = serenazgo?['serenazgo_profile'] as Map<String, dynamic>?;
+    final serenazgoLocation = serenazgoProfile?['location'] as Map<String, dynamic>?;
 
     final incidentTypeName = incidentType?['name'] as String?;
     final incidentStateName = incidentState?['name'] as String?;
+    final incidentStateDescription = incidentState?['description'] as String?;
     final municipalityName = municipality?['name'] as String?;
 
     final rawLatitude = json['latitude'];
@@ -60,6 +75,22 @@ class IncidentModel extends Incident {
     final longitude = rawLongitude is num
         ? rawLongitude.toDouble()
         : double.tryParse(rawLongitude?.toString() ?? '') ?? 0.0;
+
+    // Extract serenazgo location
+    double? serenazgoLatitude;
+    double? serenazgoLongitude;
+    if (serenazgoLocation != null) {
+      final rawSerenazgoLatitude = serenazgoLocation['latitude'];
+      final rawSerenazgoLongitude = serenazgoLocation['longitude'];
+      
+      serenazgoLatitude = rawSerenazgoLatitude is num
+          ? rawSerenazgoLatitude.toDouble()
+          : double.tryParse(rawSerenazgoLatitude?.toString() ?? '');
+      
+      serenazgoLongitude = rawSerenazgoLongitude is num
+          ? rawSerenazgoLongitude.toDouble()
+          : double.tryParse(rawSerenazgoLongitude?.toString() ?? '');
+    }
 
     return IncidentModel(
       id: (json['id'] as num?)?.toInt() ?? 0,
@@ -74,10 +105,16 @@ class IncidentModel extends Incident {
       longitude: longitude,
       status: (json['status'] as String?) ?? (incidentStateName ?? 'open'),
       incidentTypeName: incidentTypeName ?? 'Desconocido',
+      incidentTypeColorBackground: incidentType?['color_background'] as String?,
       incidentStateName: incidentStateName ?? 'open',
+      incidentStateDescription: incidentStateDescription ?? incidentStateName ?? 'Sin estado',
+      incidentStateColorBackground: incidentState?['color_background'] as String?,
+      incidentStateColorText: incidentState?['color_text'] as String?,
       municipalityName: municipalityName ?? 'Sin municipio',
       assignmentStatus: firstAssignment?['status'] as String?,
       assignedSerenazgoName: serenazgo?['name'] as String?,
+      serenazgoLatitude: serenazgoLatitude,
+      serenazgoLongitude: serenazgoLongitude,
       createdAt: DateTime.parse(json['created_at'] as String? ?? DateTime.now().toIso8601String()),
       closedAt: json['closed_at'] != null ? DateTime.tryParse(json['closed_at'] as String) : null,
     );
@@ -95,10 +132,16 @@ class IncidentModel extends Incident {
       'longitude': longitude,
       'status': status,
       'incident_type_name': incidentTypeName,
+      'incident_type_color_background': incidentTypeColorBackground,
       'incident_state_name': incidentStateName,
+      'incident_state_description': incidentStateDescription,
+      'incident_state_color_background': incidentStateColorBackground,
+      'incident_state_color_text': incidentStateColorText,
       'municipality_name': municipalityName,
       'assignment_status': assignmentStatus,
       'assigned_serenazgo_name': assignedSerenazgoName,
+      'serenazgo_latitude': serenazgoLatitude,
+      'serenazgo_longitude': serenazgoLongitude,
       'created_at': createdAt.toIso8601String(),
       'closed_at': closedAt?.toIso8601String(),
     };

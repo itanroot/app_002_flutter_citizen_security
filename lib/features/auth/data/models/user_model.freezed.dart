@@ -25,6 +25,8 @@ mixin _$UserModel {
   String get username => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   int? get municipalityId => throw _privateConstructorUsedError;
+  List<String> get roles => throw _privateConstructorUsedError;
+  List<String> get permissions => throw _privateConstructorUsedError;
 
   /// Serializes this UserModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,7 +43,14 @@ abstract class $UserModelCopyWith<$Res> {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
-  $Res call({int id, String username, String email, int? municipalityId});
+  $Res call({
+    int id,
+    String username,
+    String email,
+    int? municipalityId,
+    List<String> roles,
+    List<String> permissions,
+  });
 }
 
 /// @nodoc
@@ -63,6 +72,8 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? username = null,
     Object? email = null,
     Object? municipalityId = freezed,
+    Object? roles = null,
+    Object? permissions = null,
   }) {
     return _then(
       _value.copyWith(
@@ -82,6 +93,14 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
                 ? _value.municipalityId
                 : municipalityId // ignore: cast_nullable_to_non_nullable
                       as int?,
+            roles: null == roles
+                ? _value.roles
+                : roles // ignore: cast_nullable_to_non_nullable
+                      as List<String>,
+            permissions: null == permissions
+                ? _value.permissions
+                : permissions // ignore: cast_nullable_to_non_nullable
+                      as List<String>,
           )
           as $Val,
     );
@@ -97,7 +116,14 @@ abstract class _$$UserModelImplCopyWith<$Res>
   ) = __$$UserModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String username, String email, int? municipalityId});
+  $Res call({
+    int id,
+    String username,
+    String email,
+    int? municipalityId,
+    List<String> roles,
+    List<String> permissions,
+  });
 }
 
 /// @nodoc
@@ -118,6 +144,8 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? username = null,
     Object? email = null,
     Object? municipalityId = freezed,
+    Object? roles = null,
+    Object? permissions = null,
   }) {
     return _then(
       _$UserModelImpl(
@@ -137,6 +165,14 @@ class __$$UserModelImplCopyWithImpl<$Res>
             ? _value.municipalityId
             : municipalityId // ignore: cast_nullable_to_non_nullable
                   as int?,
+        roles: null == roles
+            ? _value._roles
+            : roles // ignore: cast_nullable_to_non_nullable
+                  as List<String>,
+        permissions: null == permissions
+            ? _value._permissions
+            : permissions // ignore: cast_nullable_to_non_nullable
+                  as List<String>,
       ),
     );
   }
@@ -150,7 +186,10 @@ class _$UserModelImpl implements _UserModel {
     required this.username,
     required this.email,
     this.municipalityId,
-  });
+    final List<String> roles = const <String>[],
+    final List<String> permissions = const <String>[],
+  }) : _roles = roles,
+       _permissions = permissions;
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserModelImplFromJson(json);
@@ -163,10 +202,27 @@ class _$UserModelImpl implements _UserModel {
   final String email;
   @override
   final int? municipalityId;
+  final List<String> _roles;
+  @override
+  @JsonKey()
+  List<String> get roles {
+    if (_roles is EqualUnmodifiableListView) return _roles;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_roles);
+  }
+
+  final List<String> _permissions;
+  @override
+  @JsonKey()
+  List<String> get permissions {
+    if (_permissions is EqualUnmodifiableListView) return _permissions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_permissions);
+  }
 
   @override
   String toString() {
-    return 'UserModel(id: $id, username: $username, email: $email, municipalityId: $municipalityId)';
+    return 'UserModel(id: $id, username: $username, email: $email, municipalityId: $municipalityId, roles: $roles, permissions: $permissions)';
   }
 
   @override
@@ -179,13 +235,25 @@ class _$UserModelImpl implements _UserModel {
                 other.username == username) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.municipalityId, municipalityId) ||
-                other.municipalityId == municipalityId));
+                other.municipalityId == municipalityId) &&
+            const DeepCollectionEquality().equals(other._roles, _roles) &&
+            const DeepCollectionEquality().equals(
+              other._permissions,
+              _permissions,
+            ));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, username, email, municipalityId);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    username,
+    email,
+    municipalityId,
+    const DeepCollectionEquality().hash(_roles),
+    const DeepCollectionEquality().hash(_permissions),
+  );
 
   /// Create a copy of UserModel
   /// with the given fields replaced by the non-null parameter values.
@@ -207,6 +275,8 @@ abstract class _UserModel implements UserModel {
     required final String username,
     required final String email,
     final int? municipalityId,
+    final List<String> roles,
+    final List<String> permissions,
   }) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
@@ -220,6 +290,10 @@ abstract class _UserModel implements UserModel {
   String get email;
   @override
   int? get municipalityId;
+  @override
+  List<String> get roles;
+  @override
+  List<String> get permissions;
 
   /// Create a copy of UserModel
   /// with the given fields replaced by the non-null parameter values.

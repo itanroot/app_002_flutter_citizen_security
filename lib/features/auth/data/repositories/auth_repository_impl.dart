@@ -13,12 +13,25 @@ class AuthRepositoryImpl implements AuthRepository {
 
   AuthRepositoryImpl(this.remoteDataSource, this.localDataSource);
 
+  UserEntity _mapUser(UserEntity user) => user;
+
+  UserEntity _mapUserModel(userModel) {
+    return UserEntity(
+      id: userModel.id,
+      username: userModel.username,
+      email: userModel.email,
+      municipalityId: userModel.municipalityId,
+      roles: userModel.roles,
+      permissions: userModel.permissions,
+    );
+  }
+
   @override
-  Future<Either<Failure, String>> login(String username, String password) async {
+  Future<Either<Failure, UserEntity>> login(String username, String password) async {
     try {
       final result = await remoteDataSource.login(username, password);
       await localDataSource.saveToken(result.token);
-      return Right(result.token);
+      return Right(_mapUserModel(result.user));
     } on ServerException catch (e) {
       return Left(ApiFailure(e.message));
     }
@@ -28,13 +41,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, UserEntity>> register(String name, String email, String password) async {
     try {
       final result = await remoteDataSource.register(name, email, password);
-      final userModel = result.user;
-      return Right(UserEntity(
-        id: userModel.id,
-        username: userModel.username,
-        email: userModel.email,
-        municipalityId: userModel.municipalityId,
-      ));
+      return Right(_mapUserModel(result.user));
     } on ServerException catch (e) {
       return Left(ApiFailure(e.message));
     }
@@ -65,12 +72,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, UserEntity>> getCurrentUser() async {
     try {
       final result = await remoteDataSource.getCurrentUser();
-      return Right(UserEntity(
-        id: result.id,
-        username: result.username,
-        email: result.email,
-        municipalityId: result.municipalityId,
-      ));
+      return Right(_mapUserModel(result));
     } on ServerException catch (e) {
       return Left(ApiFailure(e.message));
     }
