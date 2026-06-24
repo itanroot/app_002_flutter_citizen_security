@@ -19,6 +19,8 @@ class Incident extends Equatable {
   final String municipalityName;
   final String? assignmentStatus;
   final String? assignedSerenazgoName;
+  final int? assignedSerenazgoId;
+  final int? assignedSerenazgoProfileId;
   final double? serenazgoLatitude;
   final double? serenazgoLongitude;
   final DateTime createdAt;
@@ -43,6 +45,8 @@ class Incident extends Equatable {
     required this.municipalityName,
     this.assignmentStatus,
     this.assignedSerenazgoName,
+    this.assignedSerenazgoId,
+    this.assignedSerenazgoProfileId,
     this.serenazgoLatitude,
     this.serenazgoLongitude,
     required this.createdAt,
@@ -69,6 +73,8 @@ class Incident extends Equatable {
         municipalityName,
         assignmentStatus,
         assignedSerenazgoName,
+        assignedSerenazgoId,
+        assignedSerenazgoProfileId,
         serenazgoLatitude,
         serenazgoLongitude,
         createdAt,

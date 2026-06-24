@@ -163,7 +163,7 @@ class _IncidentMapPageState extends ConsumerState<IncidentMapPage> {
   @override
   void dispose() {
     _isDisposed = true;
-    unawaited(_realtimeService.detachListener());
+    unawaited(_realtimeService.disconnect());
     _mapController?.dispose();
     super.dispose();
   }
@@ -228,7 +228,7 @@ class _IncidentMapPageState extends ConsumerState<IncidentMapPage> {
       return;
     }
 
-    await _realtimeService.connectToMunicipality(
+    final connected = await _realtimeService.connectToMunicipality(
       municipalityId: municipalityId,
       onIncidentCreated: () async {
         if (!_canUseRef) return;
@@ -240,7 +240,15 @@ class _IncidentMapPageState extends ConsumerState<IncidentMapPage> {
       return;
     }
 
-    _realtimeConnected = true;
+    _realtimeConnected = connected && _realtimeService.isConnected;
+
+    if (!_realtimeConnected && _canUseRef) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Ocurrio un error. Intentalo de nuevo mas tarde.'),
+        ),
+      );
+    }
   }
 
   @override

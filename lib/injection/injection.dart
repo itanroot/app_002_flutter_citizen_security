@@ -26,6 +26,7 @@ import 'package:seguridad_ciudadana_app/features/sos/domain/repositories/sos_rep
 import 'package:seguridad_ciudadana_app/features/sos/domain/usecases/send_sos_usecase.dart';
 import 'package:seguridad_ciudadana_app/core/services/background_location_service.dart';
 import 'package:seguridad_ciudadana_app/core/services/incident_realtime_service.dart';
+import 'package:seguridad_ciudadana_app/core/services/serenazgo_location_realtime_service.dart';
 import 'package:seguridad_ciudadana_app/features/background_location/data/datasources/background_location_data_source.dart';
 import 'package:seguridad_ciudadana_app/features/background_location/data/datasources/background_location_data_source_impl.dart';
 import 'package:seguridad_ciudadana_app/features/background_location/data/repositories/background_location_repository_impl.dart';
@@ -150,6 +151,11 @@ final backgroundLocationServiceProvider = Provider<BackgroundLocationService>((r
 
 final incidentRealtimeServiceProvider = Provider<IncidentRealtimeService>((ref) {
   return IncidentRealtimeService(ref.watch(secureStorageProvider));
+});
+
+final serenazgoLocationRealtimeServiceProvider =
+    Provider<SerenazgoLocationRealtimeService>((ref) {
+  return SerenazgoLocationRealtimeService(ref.watch(secureStorageProvider));
 });
 
 final backgroundLocationDataSourceProvider = Provider<BackgroundLocationDataSource>((ref) {

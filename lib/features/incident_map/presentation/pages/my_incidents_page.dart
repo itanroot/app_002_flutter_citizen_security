@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:seguridad_ciudadana_app/core/constants/incident_taxonomy.dart';
 import 'package:seguridad_ciudadana_app/features/incident_map/domain/entities/incident.dart';
 import 'package:seguridad_ciudadana_app/features/incident_map/presentation/controllers/incident_map_controller.dart';
@@ -145,6 +146,10 @@ class _MyIncidentsPageState extends ConsumerState<MyIncidentsPage> {
     return Colors.blueGrey.shade700;
   }
 
+  void _openOsmVersion(BuildContext context) {
+    context.go('/my-incidents-osm');
+  }
+
   Set<Marker> _buildMarkers(List<Incident> incidents) {
     final markers = <Marker>{};
 
@@ -212,7 +217,20 @@ class _MyIncidentsPageState extends ConsumerState<MyIncidentsPage> {
     final markers = _buildMarkers(incidents);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Mis incidencias')),
+      appBar: AppBar(
+        title: const Text('Mis incidencias'),
+        actions: [
+          TextButton.icon(
+            onPressed: () => _openOsmVersion(context),
+            icon: const Icon(Icons.public, size: 18),
+            label: const Text('OSM'),
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
+          const SizedBox(width: 8),
+        ],
+      ),
       body: Column(
         children: [
           Expanded(
