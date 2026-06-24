@@ -10,6 +10,8 @@ class UserModel with _$UserModel {
     required String username,
     required String email,
     int? municipalityId,
+    @Default(<String>[]) List<String> roles,
+    @Default(<String>[]) List<String> permissions,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);

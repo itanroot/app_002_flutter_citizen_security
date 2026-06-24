@@ -4,4 +4,5 @@ abstract class IncidentRepository {
   Future<List<Incident>> getAllIncidents();
   Future<List<Incident>> getPendingIncidents();
   Future<List<Incident>> getMyIncidents();
+  Future<void> attendSosIncident({required int incidentId, required int userId});
 }

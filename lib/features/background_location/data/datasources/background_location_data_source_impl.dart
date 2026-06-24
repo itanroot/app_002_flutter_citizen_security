@@ -34,10 +34,10 @@ class BackgroundLocationDataSourceImpl implements BackgroundLocationDataSource {
 
     final token = await _secureStorage.read(key: 'auth_token');
     if (token == null || token.isEmpty) {
-      throw ServerException('Authentication token is required to start background tracking.');
+      throw ServerException('Se requiere un token de autenticación para iniciar el seguimiento en segundo plano.');
     }
 
-    final endpoint = '${AppConfig.apiBaseUrl}${ApiConstants.userTrackingLocation}';
+    final endpoint = '${AppConfig.apiBaseUrl}${ApiConstants.serenazgoTrackingLocation}';
     await _service.start(token, endpoint);
   }
 

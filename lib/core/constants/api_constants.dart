@@ -20,7 +20,11 @@ final class ApiConstants {
   static const String incidentMy = '$_v1/incidents/my';
   static const String incidents = '$_v1/incidents';
 
+  static String incidentSosDetail(int id) => '$incidentSos/$id';
+
   //  Serenazgo
+
+  static const String serenazgoTrackingLocation = '$_v1/serenazgo/location/save';
 
   // GET — Incidencias activas para el mapa.
   static const String serenazgoIncidentsMap = '$_v1/serenazgo/incidents/map';
@@ -31,11 +35,17 @@ final class ApiConstants {
 
   //  WebSocket — Canales Reverb
 
-  /// Canal privado por municipio.
+  /// Canal privado por municipio (incidencias).
   static String serenazgoChannel(int municipalityId) =>
       'channel-serenazgo.municipality.$municipalityId';
+
+  /// Canal privado para actualizaciones de ubicación de serenazgo.
+  static String serenazgoLocationChannel(int municipalityId) =>
+      'channel-serenazgo-location.municipality.$municipalityId';
 
   //  WebSocket — Nombres de eventos
 
   static const String eventIncidentCreated = 'IncidentCreated';
+  static const String eventNewIncident = 'new.incident';
+  static const String eventSerenazgoLocationUpdated = 'serenazgo.location.updated';
 }

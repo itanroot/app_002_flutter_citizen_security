@@ -42,6 +42,8 @@ dependencies:
 
   # Map
   google_maps_flutter: ^2.9.0
+  flutter_map: ^8.3.0
+  latlong2: ^0.9.1
 
   # Networking
   dio: ^5.4.3

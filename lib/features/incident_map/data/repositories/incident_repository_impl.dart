@@ -32,4 +32,9 @@ class IncidentRepositoryImpl implements IncidentRepository {
     final List<IncidentModel> models = await remote.fetchMyIncidents(deviceUuid: deviceUuid);
     return models;
   }
+
+  @override
+  Future<void> attendSosIncident({required int incidentId, required int userId}) {
+    return remote.attendSosIncident(incidentId: incidentId, userId: userId);
+  }
 }

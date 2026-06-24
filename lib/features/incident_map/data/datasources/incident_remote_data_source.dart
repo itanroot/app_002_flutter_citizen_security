@@ -4,4 +4,5 @@ abstract class IncidentRemoteDataSource {
   Future<List<IncidentModel>> fetchAllIncidents();
   Future<List<IncidentModel>> fetchPendingIncidents();
   Future<List<IncidentModel>> fetchMyIncidents({String? deviceUuid});
+  Future<void> attendSosIncident({required int incidentId, required int userId});
 }
